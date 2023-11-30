@@ -1,36 +1,56 @@
-import React, { Component, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import Select from 'react-select';
 import logo from './logo labege.png';
 import sam2 from './sam2.jpg';
-import quentin from './quentintest.png'
-import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
+import DataTable from 'react-data-table-component';
+import quentin from './quentintest.png';
 
-// var joueurPicked = {label: 'Samuel', value: 'Vecchia', position: 'CDM', good_foot: "right" };
+import './App.css';
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+
+const columns = [
+  {
+      name: 'Surname',
+      selector: row => row.value,
+  },
+  {
+      name: 'Name',
+      selector: row => row.label,
+  },
+  {
+    name: 'position',
+    selector: row => row.position
+  },
+  {
+    name: 'Good_foot',
+    selector: row => row.good_foot
+  }
+];
+
 
 
 const team = 
   [
     {label: 'Labege Inter FC', value: 'Stade Juste_fontaine', position: 'U15', good_foot: "Astro_turf" },
-    {label: 'Samuel', value: 'Vecchia', position: 'CDM', good_foot: "right" , picture: 'sam2'},
-    {label: 'Elias', value: 'Laurens', position: 'CDM', good_foot: "left" },
-    {label: 'Quentin', value: 'Saudez', position: 'LW', good_foot: "left" , picture: 'quentin'},
-    {label: 'Evan', value: 'Milhavet', position: 'RB', good_foot: "right" },
-    {label: 'Hugo', value: 'Dargassies', position: 'CAM', good_foot: "right" },
-    {label: 'Paul', value: 'Bonnamy', position: 'CB', good_foot: "left" },
-    {label: 'Nathan', value: 'Hypocrat', position: 'LB', good_foot: "right"},
-    {label: 'Mahdi', value: 'Liberman', position: 'RB', good_foot: "right" },
-    {label: 'Corentin', value: 'Ganderatz', position: 'RW', good_foot: "right" },
-    {label: 'Samuel-Noah', value: 'Mbala-Nkelenda', position: 'CB', good_foot: "right" },
-    {label: 'Tom', value: 'Preuss', position: 'CM', good_foot: "right" },
-    {label: 'Kylian', value: 'Mayaboduarte', position: 'CAM', good_foot: "right"},
-    {label: 'Nour', value: 'Tazi', position: 'LB', good_foot: "left" },
-    {label: 'Sacha', value: 'Lincetto', position: 'LW', good_foot: "left" },
-    {label: 'Alexandre', value: 'Parveau', position: 'ST', good_foot: "left" },
-    {label: 'Axel', value: 'Prud homme', position: 'CB', good_foot: "right" },
-    {label: 'Alexandre', value: 'Ferjani', position: 'CM', good_foot: "right" },
-    {label: 'Flavio', value: 'Cleo', position: 'GK', good_foot: "right"},
-    {label: 'Natan', value: 'Milango', position: 'ST', good_foot: "right" },
+    {label: 'Samuel', value: 'Vecchia', position: 'CDM', good_foot: "right" , picture: sam2},
+    {label: 'Elias', value: 'Laurens', position: 'CDM', good_foot: "left" , picture: logo},
+    {label: 'Quentin', value: 'Saudez', position: 'LW', good_foot: "left" , picture: quentin},
+    {label: 'Evan', value: 'Milhavet', position: 'RB', good_foot: "right", picture: logo},
+    {label: 'Hugo', value: 'Dargassies', position: 'CAM', good_foot: "right", picture: logo },
+    {label: 'Paul', value: 'Bonnamy', position: 'CB', good_foot: "left", picture: logo },
+    {label: 'Nathan', value: 'Hypocrat', position: 'LB', good_foot: "right", picture: logo},
+    {label: 'Mahdi', value: 'Liberman', position: 'RB', good_foot: "right", picture: logo },
+    {label: 'Corentin', value: 'Ganderatz', position: 'RW', good_foot: "right", picture: logo },
+    {label: 'Samuel-Noah', value: 'Mbala-Nkelenda', position: 'CB', good_foot: "right", picture: logo},
+    {label: 'Tom', value: 'Preuss', position: 'CM', good_foot: "right", picture: logo },
+    {label: 'Kylian', value: 'Mayaboduarte', position: 'CAM', good_foot: "right", picture: logo},
+    {label: 'Nour', value: 'Tazi', position: 'LB', good_foot: "left", picture: logo},
+    {label: 'Sacha', value: 'Lincetto', position: 'LW', good_foot: "left", picture: logo },
+    {label: 'Alexandre', value: 'Parveau', position: 'ST', good_foot: "left", picture: logo },
+    {label: 'Axel', value: 'Prud homme', position: 'CB', good_foot: "right", picture: logo },
+    {label: 'Alexandre', value: 'Ferjani', position: 'CM', good_foot: "right", picture: logo },
+    {label: 'Flavio', value: 'Cleo', position: 'GK', good_foot: "right", picture: logo},
+    {label: 'Natan', value: 'Milango', position: 'ST', good_foot: "right", picture: logo},
 
 
   ];
@@ -46,10 +66,11 @@ function Players() {
 
     const player = team.filter((player) => player.value === id);
     console.log(player);
-    setPlayerPicked(player[0]);
+    setPlayerPicked(player);
     
 })
   
+
     return (
   <div>
   <Select options={team}
@@ -59,26 +80,13 @@ function Players() {
   
   <h2>Team</h2>
     
-  <table style={{border: '1px solid', borderColor: 'blue', width: '100%', borderCollapse: 'collapse'}}>
-    <tr style={{border: '1px solid', borderColor: 'blue'}}>
-      <td style={{border: '1px solid', borderColor: 'blue'}}>Surname</td>
-    <td>{playerPicked?.value}</td>
-    </tr>
-    <tr style={{border: '1px solid', borderColor: 'blue'}}>
-      <td style={{border: '1px solid', borderColor: 'blue'}}>Name</td>
-    <td>{playerPicked?.label}</td>
-    </tr>
-    <tr style={{border: '1px solid', borderColor: 'blue'}}>
-      <td style={{border: '1px solid', borderColor: 'blue'}}>Position</td>
-    <td>{playerPicked?.position}</td>
-    </tr>
-    <tr style={{border: '1px solid', borderColor: 'blue'}}>
-      <td style={{border: '1px solid', borderColor: 'blue'}}>Good_foot</td>
-    <td>{playerPicked?.good_foot}</td>
-    </tr>
+  
+   <DataTable
+            columns={columns}
+            data={playerPicked}
+        />
 
-  </table>
-  <img src={logo} alt="React Image" />
+  <img src={playerPicked[0]?.picture} alt="React Image" />
   </div>
   )}
   
