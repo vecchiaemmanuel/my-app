@@ -1,17 +1,20 @@
-import React, { Component } from 'react'
-import Select from 'react-select'
+import React, { Component, useState, useCallback } from 'react';
+import Select from 'react-select';
 import logo from './logo labege.png';
-import sam2 from './sam2.jpg'
+import sam2 from './sam2.jpg';
+import quentin from './quentintest.png'
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
 
-var joueurPicked = {label: 'Samuel', value: 'Vecchia', position: 'CDM', good_foot: "right" };
+// var joueurPicked = {label: 'Samuel', value: 'Vecchia', position: 'CDM', good_foot: "right" };
+
 
 const team = 
   [
-    {label: 'Samuel', value: 'Vecchia', position: 'CDM', good_foot: "right" },
+    {label: 'Labege Inter FC', value: 'Stade Juste_fontaine', position: 'U15', good_foot: "Astro_turf" },
+    {label: 'Samuel', value: 'Vecchia', position: 'CDM', good_foot: "right" , picture: 'sam2'},
     {label: 'Elias', value: 'Laurens', position: 'CDM', good_foot: "left" },
-    {label: 'Quentin', value: 'audez', position: 'LW', good_foot: "left"},
+    {label: 'Quentin', value: 'Saudez', position: 'LW', good_foot: "left" , picture: 'quentin'},
     {label: 'Evan', value: 'Milhavet', position: 'RB', good_foot: "right" },
     {label: 'Hugo', value: 'Dargassies', position: 'CAM', good_foot: "right" },
     {label: 'Paul', value: 'Bonnamy', position: 'CB', good_foot: "left" },
@@ -33,44 +36,49 @@ const team =
   ];
 
 
-function getPlayer (id) {
+
+
+function Players() {
+
+  const [playerPicked, setPlayerPicked] = useState({label: 'Labege Inter FC', value: 'Stade Juste_fontaine', position: 'U15', good_foot: "Astro_turf" });
+
+  const getPlayer = useCallback((id) => {
 
     const player = team.filter((player) => player.value === id);
     console.log(player);
-    joueurPicked =  player;
-}
-
-function players() {
+    setPlayerPicked(player[0]);
+    
+})
   
     return (
   <div>
-  <Select options={players}
-  onChange={(choice) => getPlayer(choice)}
+  <Select options={team}
+  onChange={(choice) => getPlayer(choice.value)}
   />
 
   
-  <h2>Joueur</h2>
+  <h2>Team</h2>
     
   <table style={{border: '1px solid', borderColor: 'blue', width: '100%', borderCollapse: 'collapse'}}>
     <tr style={{border: '1px solid', borderColor: 'blue'}}>
       <td style={{border: '1px solid', borderColor: 'blue'}}>Surname</td>
-    <td>{joueurPicked.value}</td>
+    <td>{playerPicked?.value}</td>
     </tr>
     <tr style={{border: '1px solid', borderColor: 'blue'}}>
       <td style={{border: '1px solid', borderColor: 'blue'}}>Name</td>
-    <td>{joueurPicked.label}</td>
+    <td>{playerPicked?.label}</td>
     </tr>
     <tr style={{border: '1px solid', borderColor: 'blue'}}>
       <td style={{border: '1px solid', borderColor: 'blue'}}>Position</td>
-    <td>{joueurPicked.position}</td>
+    <td>{playerPicked?.position}</td>
     </tr>
     <tr style={{border: '1px solid', borderColor: 'blue'}}>
       <td style={{border: '1px solid', borderColor: 'blue'}}>Good_foot</td>
-    <td>{joueurPicked.good_foot}</td>
+    <td>{playerPicked?.good_foot}</td>
     </tr>
 
   </table>
-  <img src={sam2} alt="React Image" />
+  <img src={logo} alt="React Image" />
   </div>
   )}
   
@@ -92,6 +100,8 @@ function home() {
 
 function App() {
 
+ 
+
   return (
     <Router>
        <div>
@@ -112,7 +122,7 @@ function App() {
          </ul>
        </nav>
        <Routes>
-        <Route path="/players" Component={players} />
+        <Route path="/players" Component={Players} />
 
         <Route path="/"  Component={home}/>
         </Routes>
@@ -125,5 +135,6 @@ function App() {
 
 
 export default App;
+
 
 
